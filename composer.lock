@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "a3c1d5462d061c91562ed0ce2cdb0155",
+    "content-hash": "3fa52c320da53c0549732d71a2ab5b43",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -1356,16 +1356,16 @@
         },
         {
             "name": "giggsey/libphonenumber-for-php",
-            "version": "8.0",
+            "version": "8.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/giggsey/libphonenumber-for-php.git",
-                "reference": "9aae8b8948f0c2b7e2cfc87327f71c41670cd136"
+                "reference": "2ca74e98ddfb2780057b1a5654616f1179be85e0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/giggsey/libphonenumber-for-php/zipball/9aae8b8948f0c2b7e2cfc87327f71c41670cd136",
-                "reference": "9aae8b8948f0c2b7e2cfc87327f71c41670cd136",
+                "url": "https://api.github.com/repos/giggsey/libphonenumber-for-php/zipball/2ca74e98ddfb2780057b1a5654616f1179be85e0",
+                "reference": "2ca74e98ddfb2780057b1a5654616f1179be85e0",
                 "shasum": ""
             },
             "require": {
@@ -1414,7 +1414,7 @@
                 "phonenumber",
                 "validation"
             ],
-            "time": "2016-12-12T09:08:42+00:00"
+            "time": "2017-01-11T11:40:50+00:00"
         },
         {
             "name": "giggsey/locale",
@@ -2915,16 +2915,16 @@
         },
         {
             "name": "sensio/distribution-bundle",
-            "version": "v5.0.17",
+            "version": "v5.0.18",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sensiolabs/SensioDistributionBundle.git",
-                "reference": "4e98a1a6d3935d05414bd11e421a2047c93619f7"
+                "reference": "17846680901003d26d823c2e3ac9228702837916"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sensiolabs/SensioDistributionBundle/zipball/4e98a1a6d3935d05414bd11e421a2047c93619f7",
-                "reference": "4e98a1a6d3935d05414bd11e421a2047c93619f7",
+                "url": "https://api.github.com/repos/sensiolabs/SensioDistributionBundle/zipball/17846680901003d26d823c2e3ac9228702837916",
+                "reference": "17846680901003d26d823c2e3ac9228702837916",
                 "shasum": ""
             },
             "require": {
@@ -2963,40 +2963,39 @@
                 "configuration",
                 "distribution"
             ],
-            "time": "2017-01-04T13:35:35+00:00"
+            "time": "2017-01-10T14:58:45+00:00"
         },
         {
             "name": "sensio/framework-extra-bundle",
-            "version": "v3.0.18",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sensiolabs/SensioFrameworkExtraBundle.git",
-                "reference": "c38bc608e12e81089d5d9dfbf72775ed553c61af"
+                "reference": "2ea870f3cf472658595e1679d88474bed732efb2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sensiolabs/SensioFrameworkExtraBundle/zipball/c38bc608e12e81089d5d9dfbf72775ed553c61af",
-                "reference": "c38bc608e12e81089d5d9dfbf72775ed553c61af",
+                "url": "https://api.github.com/repos/sensiolabs/SensioFrameworkExtraBundle/zipball/2ea870f3cf472658595e1679d88474bed732efb2",
+                "reference": "2ea870f3cf472658595e1679d88474bed732efb2",
                 "shasum": ""
             },
             "require": {
                 "doctrine/common": "~2.2",
-                "symfony/dependency-injection": "~2.3|~3.0",
-                "symfony/framework-bundle": "~2.3|~3.0"
+                "symfony/config": "^3.2",
+                "symfony/dependency-injection": "~3.0",
+                "symfony/framework-bundle": "^3.1",
+                "symfony/http-kernel": "^3.1"
             },
             "require-dev": {
-                "symfony/asset": "~2.7|~3.0",
-                "symfony/browser-kit": "~2.3|~3.0",
-                "symfony/dom-crawler": "~2.3|~3.0",
-                "symfony/expression-language": "~2.4|~3.0",
-                "symfony/finder": "~2.3|~3.0",
+                "symfony/browser-kit": "~3.0",
+                "symfony/dom-crawler": "~3.0",
+                "symfony/expression-language": "~3.0",
+                "symfony/finder": "~3.0",
                 "symfony/phpunit-bridge": "~3.2",
                 "symfony/psr-http-message-bridge": "^0.3",
-                "symfony/security-bundle": "~2.4|~3.0",
-                "symfony/templating": "~2.3|~3.0",
-                "symfony/translation": "~2.3|~3.0",
-                "symfony/twig-bundle": "~2.3|~3.0",
-                "symfony/yaml": "~2.3|~3.0",
+                "symfony/security-bundle": "~3.0",
+                "symfony/twig-bundle": "~3.0",
+                "symfony/yaml": "~3.0",
                 "twig/twig": "~1.11|~2.0",
                 "zendframework/zend-diactoros": "^1.3"
             },
@@ -3008,7 +3007,7 @@
             "type": "symfony-bundle",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "3.0.x-dev"
+                    "dev-master": "4.0.x-dev"
                 }
             },
             "autoload": {
@@ -3031,7 +3030,7 @@
                 "annotations",
                 "controllers"
             ],
-            "time": "2016-12-14T08:30:06+00:00"
+            "time": "2017-01-02 20:43:55"
         },
         {
             "name": "sensiolabs/security-checker",
@@ -3302,16 +3301,16 @@
         },
         {
             "name": "symfony/monolog-bundle",
-            "version": "v3.0.2",
+            "version": "v3.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/monolog-bundle.git",
-                "reference": "804425dfceec0097bf3e5dea3a73d91e055686be"
+                "reference": "ebce76a39a65495a66c34eb1574cc4b9e35a4e64"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/monolog-bundle/zipball/804425dfceec0097bf3e5dea3a73d91e055686be",
-                "reference": "804425dfceec0097bf3e5dea3a73d91e055686be",
+                "url": "https://api.github.com/repos/symfony/monolog-bundle/zipball/ebce76a39a65495a66c34eb1574cc4b9e35a4e64",
+                "reference": "ebce76a39a65495a66c34eb1574cc4b9e35a4e64",
                 "shasum": ""
             },
             "require": {
@@ -3358,7 +3357,7 @@
                 "log",
                 "logging"
             ],
-            "time": "2017-01-03T12:32:45+00:00"
+            "time": "2017-01-10T20:01:51+00:00"
         },
         {
             "name": "symfony/polyfill-apcu",
@@ -5545,7 +5544,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "sensio/framework-extra-bundle": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {

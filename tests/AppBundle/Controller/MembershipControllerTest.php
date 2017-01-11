@@ -3,9 +3,11 @@
 namespace Tests\AppBundle\Controller;
 
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
+use AppBundle\Entity\ActivationKey;
 use AppBundle\Entity\Adherent;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Bundle\FrameworkBundle\Client;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class MembershipControllerTest extends WebTestCase
 {
@@ -13,6 +15,11 @@ class MembershipControllerTest extends WebTestCase
      * @var Client
      */
     private $client;
+
+    /**
+     * @var ContainerInterface
+     */
+    private $container;
 
     /**
      * @dataProvider provideEmailAddress
@@ -115,9 +122,16 @@ class MembershipControllerTest extends WebTestCase
         $this->client->submit($this->client->getCrawler()->selectButton('become-adherent')->form(), $data);
         $this->assertTrue($this->client->getResponse()->isRedirect());
 
+        $doctrine = $this->get('doctrine');
+
         $this->assertInstanceOf(
             Adherent::class,
-            $this->client->getContainer()->get('doctrine')->getRepository(Adherent::class)->findByEmail('paul@dupont.tld')
+            $adherent = $doctrine->getRepository(Adherent::class)->findByEmail('paul@dupont.tld')
+        );
+
+        $this->assertInstanceOf(
+            ActivationKey::class,
+            $activationKey = $doctrine->getRepository(ActivationKey::class)->findAdherentMostRecentKey((string) $adherent->getUuid())
         );
     }
 
@@ -148,6 +162,11 @@ class MembershipControllerTest extends WebTestCase
         ];
     }
 
+    private function get($id)
+    {
+        return $this->container->get($id);
+    }
+
     protected function setUp()
     {
         parent::setUp();
@@ -157,6 +176,7 @@ class MembershipControllerTest extends WebTestCase
         ]);
 
         $this->client = static::createClient();
+        $this->container = $this->client->getContainer();
     }
 
     protected function tearDown()
@@ -164,6 +184,7 @@ class MembershipControllerTest extends WebTestCase
         $this->loadFixtures([]);
 
         $this->client = null;
+        $this->container = null;
 
         parent::tearDown();
     }
