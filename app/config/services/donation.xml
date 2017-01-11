@@ -4,7 +4,11 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
 
-        <service id="app.donation.factory" class="AppBundle\Donation\DonationFactory" />
+        <service id="app.donation.factory" class="AppBundle\Donation\DonationFactory">
+            <argument type="service" id="doctrine" />
+        </service>
+
+        <service id="app.donation.manager" class="AppBundle\Donation\DonationManager" />
 
         <service id="app.donation.form_factory" class="AppBundle\Donation\PayboxFormFactory">
             <argument>%kernel.environment%</argument>

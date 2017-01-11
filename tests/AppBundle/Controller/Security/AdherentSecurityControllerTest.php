@@ -26,7 +26,7 @@ class AdherentSecurityControllerTest extends AbstractControllerTest
         $client->request(Request::METHOD_POST, '/espace-adherent/connexion/check', []);
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $client->getResponse());
-        $this->assertClientIsRedirectedTo('/espace-adherent/connexion', $client);
+        $this->assertClientIsRedirectedTo('/espace-adherent/connexion', $client, true);
 
         $crawler = $client->followRedirect();
 

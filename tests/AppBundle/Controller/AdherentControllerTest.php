@@ -14,6 +14,6 @@ class AdherentControllerTest extends AbstractControllerTest
         $client->request(Request::METHOD_GET, '/espace-adherent/mon-profil');
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $client->getResponse());
-        $this->assertClientIsRedirectedTo('/espace-adherent/connexion', $client);
+        $this->assertClientIsRedirectedTo('/espace-adherent/connexion', $client, true);
     }
 }

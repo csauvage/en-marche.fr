@@ -4,10 +4,11 @@ namespace Tests\AppBundle\Controller;
 
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\Entity\Adherent;
-use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Bundle\FrameworkBundle\Client;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
-class MembershipControllerTest extends WebTestCase
+class MembershipControllerTest extends AbstractControllerTest
 {
     /**
      * @var Client
@@ -19,7 +20,7 @@ class MembershipControllerTest extends WebTestCase
      */
     public function testCannotCreateMembershipAccountWithSomeoneElseEmailAddress($emailAddress)
     {
-        $crawler = $this->client->request('GET', '/inscription');
+        $crawler = $this->client->request(Request::METHOD_GET, '/inscription');
 
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
@@ -27,7 +28,7 @@ class MembershipControllerTest extends WebTestCase
         $data['membership_request']['emailAddress'] = $emailAddress;
         $crawler = $this->client->submit($crawler->selectButton('become-adherent')->form(), $data);
 
-        $this->assertTrue($this->client->getResponse()->isSuccessful());
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertSame('Cette adresse e-mail existe déjà.', $crawler->filter('#field-email-address > .form__errors > li')->text());
     }
 
@@ -46,7 +47,7 @@ class MembershipControllerTest extends WebTestCase
 
     public function testCannotCreateMembershipAccountIfAdherentIsUnder15YearsOld()
     {
-        $crawler = $this->client->request('GET', '/inscription');
+        $crawler = $this->client->request(Request::METHOD_GET, '/inscription');
 
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
@@ -54,13 +55,13 @@ class MembershipControllerTest extends WebTestCase
         $data['membership_request']['birthdate'] = date('d/m/Y');
         $crawler = $this->client->submit($crawler->selectButton('become-adherent')->form(), $data);
 
-        $this->assertTrue($this->client->getResponse()->isSuccessful());
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertSame("Vous devez être âgé d'au moins 15 ans pour adhérer.", $crawler->filter('#field-birthdate > .form__errors > li')->text());
     }
 
     public function testCannotCreateMembershipAccountIfConditionsAreNotAccepted()
     {
-        $crawler = $this->client->request('GET', '/inscription');
+        $crawler = $this->client->request(Request::METHOD_GET, '/inscription');
 
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
@@ -68,13 +69,13 @@ class MembershipControllerTest extends WebTestCase
         $data['membership_request']['conditions'] = false;
         $crawler = $this->client->submit($crawler->selectButton('become-adherent')->form(), $data);
 
-        $this->assertTrue($this->client->getResponse()->isSuccessful());
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertSame('Vous devez accepter la charte.', $crawler->filter('#field-conditions > .form__errors > li')->text());
     }
 
     public function testCannotCreateMembershipAccountWithInvalidFrenchAddress()
     {
-        $crawler = $this->client->request('GET', '/inscription');
+        $crawler = $this->client->request(Request::METHOD_GET, '/inscription');
 
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
@@ -83,18 +84,19 @@ class MembershipControllerTest extends WebTestCase
         $data['membership_request']['city'] = '73100-73999';
         $crawler = $this->client->submit($crawler->selectButton('become-adherent')->form(), $data);
 
-        $this->assertTrue($this->client->getResponse()->isSuccessful());
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertSame("Cette valeur n'est pas un identifiant valide de ville française.", $crawler->filter('#app-membership > .form__errors > li')->text());
     }
 
     public function testCreateMembershipAccountForFrenchAdherentIsSuccessful()
     {
-        $this->client->request('GET', '/inscription');
+        $crawler = $this->client->request(Request::METHOD_GET, '/inscription');
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
-        $this->client->submit($this->client->getCrawler()->selectButton('become-adherent')->form(), static::createFormData());
-        $this->assertTrue($this->client->getResponse()->isRedirect());
+        $this->client->submit($crawler->selectButton('become-adherent')->form(), static::createFormData());
 
+        $this->assertClientIsRedirectedTo('/don', $this->client);
+        $this->assertInstanceOf(Adherent::class, $this->client->getRequest()->getSession()->get('tmp_adherent'));
         $this->assertInstanceOf(
             Adherent::class,
             $this->client->getContainer()->get('doctrine')->getRepository(Adherent::class)->findByEmail('paul@dupont.tld')
@@ -103,8 +105,10 @@ class MembershipControllerTest extends WebTestCase
 
     public function testCreateMembershipAccountForSwissAdherentIsSuccessful()
     {
-        $this->client->request('GET', '/inscription');
-        $this->assertTrue($this->client->getResponse()->isSuccessful());
+        $client = $this->client;
+        $client->request(Request::METHOD_GET, '/inscription');
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
         $data = static::createFormData();
         $data['membership_request']['country'] = 'CH';
@@ -113,12 +117,19 @@ class MembershipControllerTest extends WebTestCase
         $data['membership_request']['address'] = '';
 
         $this->client->submit($this->client->getCrawler()->selectButton('become-adherent')->form(), $data);
-        $this->assertTrue($this->client->getResponse()->isRedirect());
 
+        $this->assertClientIsRedirectedTo('/don', $this->client);
+        $this->assertInstanceOf(Adherent::class, $this->client->getRequest()->getSession()->get('tmp_adherent'));
         $this->assertInstanceOf(
             Adherent::class,
             $this->client->getContainer()->get('doctrine')->getRepository(Adherent::class)->findByEmail('paul@dupont.tld')
         );
+
+        $this->client->followRedirect();
+        $crawler = $this->client->getCrawler();
+
+        $this->assertCount(1, $lastName = $crawler->filter('input[name="app_donation[lastName]"]'));
+        $this->assertSame('Dupont', $lastName->attr('value'), 'Adherent\'s name should be pre filled');
     }
 
     private static function createFormData()
@@ -155,14 +166,12 @@ class MembershipControllerTest extends WebTestCase
         $this->loadFixtures([
             LoadAdherentData::class,
         ]);
-
         $this->client = static::createClient();
     }
 
     protected function tearDown()
     {
         $this->loadFixtures([]);
-
         $this->client = null;
 
         parent::tearDown();

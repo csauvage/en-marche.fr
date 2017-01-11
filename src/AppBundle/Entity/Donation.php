@@ -204,21 +204,9 @@ class Donation
         return $this->finished && $this->donatedAt instanceof \DateTime;
     }
 
-    public static function creatUuid(): UuidInterface
-    {
-        return Uuid::uuid4();
-    }
-
     public function getId(): UuidInterface
     {
         return $this->id;
-    }
-
-    public function setId(UuidInterface $id): Donation
-    {
-        $this->id = $id;
-
-        return $this;
     }
 
     /**
@@ -503,5 +491,11 @@ class Donation
     public function getCreatedAt(): \DateTime
     {
         return $this->createdAt;
+    }
+
+    public function init(string $clientIp)
+    {
+        $this->id= Uuid::uuid4();
+        $this->clientIp = $clientIp;
     }
 }
