@@ -119,6 +119,7 @@ class MembershipRequest
         return $dto;
     }
 
+<<<<<<< HEAD
     public static function createFromAdherent(Adherent $adherent): self
     {
         $dto = new self();
@@ -133,6 +134,8 @@ class MembershipRequest
         return $dto;
     }
 
+=======
+>>>>>>> [AppBundle] fixes phone number prefix code on registration page.
     private static function createPhoneNumber(int $countryCode = 33, string $number = null)
     {
         $phone = new PhoneNumber();
@@ -145,6 +148,7 @@ class MembershipRequest
         return $phone;
     }
 
+<<<<<<< HEAD
     /**
      * Sets an Address instance.
      *
@@ -165,6 +169,8 @@ class MembershipRequest
         return $this->address;
     }
 
+=======
+>>>>>>> [AppBundle] fixes phone number prefix code on registration page.
     public function setEmailAddress(string $emailAddress)
     {
         $this->emailAddress = mb_strtolower($emailAddress);
