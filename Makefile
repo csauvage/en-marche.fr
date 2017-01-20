@@ -5,9 +5,11 @@ all: boot install assets run
 
 boot:
 	docker-compose up -d
+	$(CONSOLE) doctrine:schema:update -f
 
 install:
 	$(TOOLS) sh -c "composer install && yarn install"
+	$(CONSOLE) server:run
 
 assets:
 	$(TOOLS) sh -c "npm run build-dev"
